@@ -7,6 +7,8 @@ const exampleBoard = () => [
   ["O", "O", "O"],
 ]
 
+const BG_COLOR = "#dce5ff"
+
 class TicTacToeBoard extends React.Component {
   static defaultProps = {
     rows: 3,
@@ -20,6 +22,7 @@ class TicTacToeBoard extends React.Component {
     this.state = {
       board: exampleBoard(), //this.blankBoard(props.rows, props.cols),
     }
+    this.bgColor = BG_COLOR
     this.pieceSize = 50
     console.log(this.state.board)
   }
@@ -38,6 +41,9 @@ class TicTacToeBoard extends React.Component {
         ref="canvas"
         width={400}
         height={400}
+        onClick={e => this.handleClick(e)}
+        onMouseOver={e => this.handleMouseOver(e)}
+        onMouseOut={e => this.handleMouseOut(e)}
       />
     )
   }
@@ -69,7 +75,8 @@ class TicTacToeBoard extends React.Component {
     const gap = 10
 
     // Reset the canvas
-    ctx.fillStyle = "#dce5ff"
+    ctx.fillStyle = this.bgColor
+    ctx.fill()
     ctx.fillRect(0, 0, W, H)
 
     ctx.strokeStyle = "#000000"
@@ -92,9 +99,9 @@ class TicTacToeBoard extends React.Component {
     const percentAtIndex = [1 / 6, 1 / 2, 5 / 6]
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
-        if (this.state.board[i][j] == "X") {
+        if (this.state.board[i][j] === "X") {
           this.drawX(ctx, W * percentAtIndex[j], H * percentAtIndex[i])
-        } else if (this.state.board[i][j] == "O") {
+        } else if (this.state.board[i][j] === "O") {
           this.drawO(ctx, W * percentAtIndex[j], H * percentAtIndex[i])
         }
       }
@@ -105,6 +112,18 @@ class TicTacToeBoard extends React.Component {
     this.draw()
   }
   componentDidUpdate() {
+    this.draw()
+  }
+
+  handleClick(e) {}
+
+  handleMouseOver(e) {
+    this.bgColor = "#ff0000"
+    this.draw()
+  }
+
+  handleMouseOut(e) {
+    this.bgColor = "#dce5ff"
     this.draw()
   }
 }
